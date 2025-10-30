@@ -1,4 +1,4 @@
-// Tab switching code
+// Tab switching
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -15,7 +15,7 @@ tabButtons.forEach(btn => {
   });
 });
 
-// Chat demo
+// Chat functionality
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendBtn = document.getElementById('sendBtn');
@@ -41,7 +41,7 @@ function addMessage(text, sender) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// --- Blog tab variables ---
+// Blog tab variables
 const blogListContainer = document.getElementById('blogList');
 const paginationContainer = document.getElementById('pagination');
 
@@ -50,18 +50,18 @@ let currentPage = 1;
 let totalPosts = 0;
 let blogData = [];
 
-// Đọc nhãn từ URL hoặc set mặc định "The Caribbean"
+// Get label from URL query or default
 const urlParams = new URLSearchParams(window.location.search);
-const labelParam = urlParams.get('label') || "The%20Caribbean";
-const labelName = decodeURIComponent(labelParam);
+const labelParam = urlParams.get('label') || "The Caribbean";
+const labelName = labelParam.replace(/\s+/g, '-'); // replace spaces for URL
 
-// Callback JSONP
+// JSONP callback for Blogger feed
 window.showLabelPosts = function(json) {
   if (!json.feed) return;
 
   blogData = json.feed.entry || [];
   totalPosts = json.feed.openSearch$totalResults ? parseInt(json.feed.openSearch$totalResults.$t) : blogData.length;
-  
+
   renderBlog();
   renderPagination();
 }
@@ -127,7 +127,7 @@ window.changePage = function(page) {
 }
 
 function loadBlog() {
-  // Remove old script if any
+  // Remove old script
   const oldScript = document.querySelector('script[data-label-script]');
   if (oldScript) oldScript.remove();
 
@@ -138,7 +138,7 @@ function loadBlog() {
   document.body.appendChild(script);
 }
 
-// Nếu tab blog đang active lúc load trang, gọi load blog ngay
+// Load blog if 'blog' tab active on page load
 if (document.querySelector('.tab-btn.active')?.dataset.tab === 'blog') {
   loadBlog();
 }

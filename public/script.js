@@ -1,4 +1,4 @@
-// Tab switching code (giữ nguyên)
+// Tab switching code
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -15,7 +15,7 @@ tabButtons.forEach(btn => {
   });
 });
 
-// Chat demo (giữ nguyên)
+// Chat demo
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendBtn = document.getElementById('sendBtn');
@@ -41,7 +41,7 @@ function addMessage(text, sender) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// --- Tab Blog API fetch with dynamic label from URL ---
+// --- Blog tab variables ---
 const blogListContainer = document.getElementById('blogList');
 const paginationContainer = document.getElementById('pagination');
 
@@ -55,7 +55,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const labelParam = urlParams.get('label') || "The%20Caribbean";
 const labelName = decodeURIComponent(labelParam);
 
-function showLabelPosts(json) {
+// Callback JSONP
+window.showLabelPosts = function(json) {
   if (!json.feed) return;
 
   blogData = json.feed.entry || [];
@@ -67,7 +68,7 @@ function showLabelPosts(json) {
 
 function renderBlog() {
   if (!blogData.length) {
-    blogListContainer.innerHTML = '<p>No posts found for label: ' + labelName + '</p>';
+    blogListContainer.innerHTML = '<li>No posts found for label: ' + labelName + '</li>';
     paginationContainer.innerHTML = '';
     return;
   }
@@ -95,11 +96,11 @@ function renderBlog() {
     }
     const postSummary = entry.summary ? entry.summary.$t.replace(/<[^>]+>/g, "").substring(0, 100) + "..." : "";
 
-    output += `<div class="label-post">
+    output += `<li class="label-post">
       ${postImage ? `<a href="${postUrl}" target="_blank"><img src="${postImage}" alt="${postTitle}" /></a>` : ''}
       <h3><a href="${postUrl}" target="_blank">${postTitle}</a></h3>
       <p>${postSummary}</p>
-    </div>`;
+    </li>`;
   }
   blogListContainer.innerHTML = output;
 }
@@ -133,11 +134,11 @@ function loadBlog() {
   const startIndex = (currentPage - 1) * numposts + 1;
   const script = document.createElement('script');
   script.setAttribute('data-label-script', 'true');
-  script.src = `/feeds/posts/default/-/${encodeURIComponent(labelName)}?max-results=100&orderby=published&alt=json-in-script&callback=showLabelPosts`;
+  script.src = `/feeds/posts/default/-/${encodeURIComponent(labelName)}?max-results=${numposts}&start-index=${startIndex}&orderby=published&alt=json-in-script&callback=showLabelPosts`;
   document.body.appendChild(script);
 }
 
-// Gọi loadBlog lần đầu nếu tab Blog đang được bật
+// Nếu tab blog đang active lúc load trang, gọi load blog ngay
 if (document.querySelector('.tab-btn.active')?.dataset.tab === 'blog') {
   loadBlog();
 }

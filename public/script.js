@@ -1,4 +1,4 @@
-// === Tab Switching Footer ===
+// Tab switching code (giữ nguyên)
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -8,10 +8,14 @@ tabButtons.forEach(btn => {
     tabContents.forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.tab).classList.add('active');
+
+    if (btn.dataset.tab === 'blog') {
+      loadBlog();
+    }
   });
 });
 
-// === Chat Demo ===
+// Chat demo (giữ nguyên)
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendBtn = document.getElementById('sendBtn');
@@ -37,39 +41,103 @@ function addMessage(text, sender) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// === Blog Section (Static Demo Data) ===
-const blogList = document.getElementById('blogList');
-const loadMoreBtn = document.getElementById('loadMore');
-let page = 0;
+// --- Tab Blog API fetch with dynamic label from URL ---
+const blogListContainer = document.getElementById('blogList');
+const paginationContainer = document.getElementById('pagination');
 
-const demoPosts = [
-  { title: "Introducing SmartTravelly Chat", link: "#" },
-  { title: "How to Use the Blog Tab", link: "#" },
-  { title: "Responsive UI for All Devices", link: "#" },
-  { title: "Integrating APIs Coming Soon", link: "#" },
-  { title: "Building with GitHub + Vercel", link: "#" },
-  { title: "Lightweight, Fast, and Modern UI", link: "#" },
-  { title: "Tabs Layout with Centered Design", link: "#" },
-  { title: "Add Dark Mode Easily", link: "#" },
-  { title: "TravelApp Style Interface", link: "#" },
-  { title: "Cloudflare Worker Integration", link: "#" },
-  { title: "Secure Chat Demo Placeholder", link: "#" },
-  { title: "Future: Hive.blog Sync Support", link: "#" }
-];
+const numposts = 18; // posts per page
+let currentPage = 1;
+let totalPosts = 0;
+let blogData = [];
+
+// Đọc nhãn từ URL hoặc set mặc định "The Caribbean"
+const urlParams = new URLSearchParams(window.location.search);
+const labelParam = urlParams.get('label') || "The%20Caribbean";
+const labelName = decodeURIComponent(labelParam);
+
+function showLabelPosts(json) {
+  if (!json.feed) return;
+
+  blogData = json.feed.entry || [];
+  totalPosts = json.feed.openSearch$totalResults ? parseInt(json.feed.openSearch$totalResults.$t) : blogData.length;
+  
+  renderBlog();
+  renderPagination();
+}
+
+function renderBlog() {
+  if (!blogData.length) {
+    blogListContainer.innerHTML = '<p>No posts found for label: ' + labelName + '</p>';
+    paginationContainer.innerHTML = '';
+    return;
+  }
+  const startIndex = (currentPage - 1) * numposts;
+  const endIndex = Math.min(startIndex + numposts, blogData.length);
+  let output = '';
+  for (let i = startIndex; i < endIndex; i++) {
+    const entry = blogData[i];
+    const postTitle = entry.title.$t;
+    let postUrl = '#';
+    for (let k = 0; k < entry.link.length; k++) {
+      if (entry.link[k].rel === 'alternate') {
+        postUrl = entry.link[k].href;
+        break;
+      }
+    }
+    let postImage = '';
+    if (entry.media$thumbnail) {
+      postImage = entry.media$thumbnail.url.replace(/\/s[0-9]+-c\//, "/w300-h200-c/");
+    } else if (entry.content && entry.content.$t) {
+      const imgMatch = entry.content.$t.match(/<img[^>]+src=["'](.*?)["']/i);
+      if (imgMatch && imgMatch[1]) {
+        postImage = "https://imgproxy.balv-airdrop.workers.dev/?url=" + encodeURIComponent(imgMatch[1]) + "&auto=format,compress&q=72&fit=crop";
+      }
+    }
+    const postSummary = entry.summary ? entry.summary.$t.replace(/<[^>]+>/g, "").substring(0, 100) + "..." : "";
+
+    output += `<div class="label-post">
+      ${postImage ? `<a href="${postUrl}" target="_blank"><img src="${postImage}" alt="${postTitle}" /></a>` : ''}
+      <h3><a href="${postUrl}" target="_blank">${postTitle}</a></h3>
+      <p>${postSummary}</p>
+    </div>`;
+  }
+  blogListContainer.innerHTML = output;
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(totalPosts / numposts);
+  if (totalPages <= 1) {
+    paginationContainer.innerHTML = '';
+    return;
+  }
+  paginationContainer.innerHTML = `
+    <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>
+    <span>Page ${currentPage} of ${totalPages}</span>
+    <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+  `;
+}
+
+window.changePage = function(page) {
+  const totalPages = Math.ceil(totalPosts / numposts);
+  if(page < 1 || page > totalPages) return;
+  currentPage = page;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  loadBlog();
+}
 
 function loadBlog() {
-  const start = page * 5;
-  const slice = demoPosts.slice(start, start + 5);
-  slice.forEach(p => {
-    const li = document.createElement('li');
-    li.className = 'blog-item';
-    li.innerHTML = `<a href="${p.link}" target="_blank">${p.title}</a>`;
-    blogList.appendChild(li);
-  });
-  page++;
-  if (page * 5 >= demoPosts.length) loadMoreBtn.style.display = 'none';
+  // Remove old script if any
+  const oldScript = document.querySelector('script[data-label-script]');
+  if (oldScript) oldScript.remove();
+
+  const startIndex = (currentPage - 1) * numposts + 1;
+  const script = document.createElement('script');
+  script.setAttribute('data-label-script', 'true');
+  script.src = `/feeds/posts/default/-/${encodeURIComponent(labelName)}?max-results=100&orderby=published&alt=json-in-script&callback=showLabelPosts`;
+  document.body.appendChild(script);
 }
-if(loadMoreBtn) {
-  loadMoreBtn.addEventListener('click', loadBlog);
+
+// Gọi loadBlog lần đầu nếu tab Blog đang được bật
+if (document.querySelector('.tab-btn.active')?.dataset.tab === 'blog') {
   loadBlog();
 }

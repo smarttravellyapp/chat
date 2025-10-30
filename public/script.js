@@ -1,4 +1,3 @@
-// Demo Chat System (will use API later)
 const sendBtn = document.getElementById("sendBtn");
 const input = document.getElementById("userInput");
 const chatBody = document.getElementById("chatBody");
@@ -15,7 +14,6 @@ function sendMessage() {
   appendMessage("user", text);
   input.value = "";
 
-  // Fake API response (for demo)
   setTimeout(() => {
     appendMessage("bot", getBotReply(text));
   }, 700);
@@ -31,8 +29,8 @@ function appendMessage(sender, text) {
 
 function getBotReply(input) {
   const lower = input.toLowerCase();
-  if (lower.includes("tour")) return "🌴 I recommend exploring Bali, Thailand, or Vietnam!";
-  if (lower.includes("flight")) return "✈️ You can find cheap flights on SmartTravelly's Flight tab.";
-  if (lower.includes("shop")) return "🛍️ Visit our Shop tab for exclusive travel gear.";
-  return "🤖 I'm a demo bot! I’ll soon connect to a real AI API.";
+  if (lower.includes("tour")) return "🌴 Try exploring Bali, Thailand, or Vietnam!";
+  if (lower.includes("flight")) return "✈️ You can find cheap flights on our Flights tab.";
+  if (lower.includes("shop")) return "🛍️ Check out our Shop tab for travel gear!";
+  return "🤖 I’m a demo bot! Real API will be connected soon.";
 }

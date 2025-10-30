@@ -1,4 +1,4 @@
-// Switch tabs
+// === Tab Switching ===
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -11,7 +11,7 @@ tabButtons.forEach(btn => {
   });
 });
 
-// Simple chat demo (local)
+// === Simple Chat Demo ===
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendBtn = document.getElementById('sendBtn');
@@ -37,28 +37,38 @@ function addMessage(text, sender) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Fetch Hive Blog RSS (demo 10 posts)
+// === Blog Section (Static Demo Data) ===
 const blogList = document.getElementById('blogList');
 const loadMoreBtn = document.getElementById('loadMore');
-let page = 0, posts = [];
+let page = 0;
 
-async function loadBlog() {
-  if (posts.length === 0) {
-    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://hive.blog/@rentmoney/feed');
-    const data = await res.json();
-    posts = data.items || [];
-  }
+const demoPosts = [
+  { title: "Introducing SmartTravelly Chat", link: "#" },
+  { title: "How to Use the Blog Tab", link: "#" },
+  { title: "Responsive UI for All Devices", link: "#" },
+  { title: "Integrating APIs Coming Soon", link: "#" },
+  { title: "Building with GitHub + Vercel", link: "#" },
+  { title: "Lightweight, Fast, and Modern UI", link: "#" },
+  { title: "Tabs Layout with Centered Design", link: "#" },
+  { title: "Add Dark Mode Easily", link: "#" },
+  { title: "TravelApp Style Interface", link: "#" },
+  { title: "Cloudflare Worker Integration", link: "#" },
+  { title: "Secure Chat Demo Placeholder", link: "#" },
+  { title: "Future: Hive.blog Sync Support", link: "#" }
+];
 
-  const slice = posts.slice(page * 10, (page + 1) * 10);
+function loadBlog() {
+  const start = page * 5;
+  const slice = demoPosts.slice(start, start + 5);
   slice.forEach(p => {
     const li = document.createElement('li');
     li.className = 'blog-item';
     li.innerHTML = `<a href="${p.link}" target="_blank">${p.title}</a>`;
     blogList.appendChild(li);
   });
-
   page++;
-  if (page * 10 >= posts.length) loadMoreBtn.style.display = 'none';
+  if (page * 5 >= demoPosts.length) loadMoreBtn.style.display = 'none';
 }
+
 loadMoreBtn.addEventListener('click', loadBlog);
 loadBlog();

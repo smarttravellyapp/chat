@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartTravelly AI</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
 </head>
 <body>
   <header class="main-header">SmartTravelly AI</header>
   <div class="app-container">
-    <!-- Chat Section -->
     <section class="tab-content active" id="chat">
       <div class="chat-messages" id="chatMessages">
         <div class="message bot">👋 Hello! I'm SmartTravelly AI. Ask me about tours or travel ideas.</div>
@@ -20,33 +18,27 @@
         <button id="sendBtn">Send</button>
       </div>
     </section>
-    <!-- Tours Section -->
     <section class="tab-content" id="tours">
       <div class="section-placeholder">Tours tab is coming soon!</div>
     </section>
-    <!-- Shop Section -->
     <section class="tab-content" id="shop">
       <div class="section-placeholder">Shop tab is coming soon!</div>
     </section>
-    <!-- Flights Section -->
     <section class="tab-content" id="flights">
       <div class="section-placeholder">Flights tab is coming soon!</div>
     </section>
-    <!-- Blog Section -->
     <section class="tab-content" id="blog">
       <ul id="blogList" class="blog-list"></ul>
-      <button id="loadMore" class="load-more">Load More</button>
+      <div id="pagination" class="pagination"></div>
     </section>
-    <!-- Promote Section -->
     <section class="tab-content" id="promote">
       <div class="section-placeholder">Promote tab is coming soon!</div>
     </section>
-    <!-- Login Section -->
     <section class="tab-content" id="login">
       <div class="section-placeholder">Login tab is coming soon!</div>
     </section>
   </div>
-  <!-- Footer Tab Navigation -->
+
   <footer class="bottom-tabs">
     <button class="tab-btn active" data-tab="chat">
       <span class="icon">💬</span>
@@ -77,5 +69,7 @@
       <span class="label">Login</span>
     </button>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

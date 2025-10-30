@@ -1,4 +1,4 @@
-// === Tab Switching ===
+// === Tab Switching Footer ===
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -11,7 +11,7 @@ tabButtons.forEach(btn => {
   });
 });
 
-// === Simple Chat Demo ===
+// === Chat Demo ===
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendBtn = document.getElementById('sendBtn');
@@ -69,6 +69,7 @@ function loadBlog() {
   page++;
   if (page * 5 >= demoPosts.length) loadMoreBtn.style.display = 'none';
 }
-
-loadMoreBtn.addEventListener('click', loadBlog);
-loadBlog();
+if(loadMoreBtn) {
+  loadMoreBtn.addEventListener('click', loadBlog);
+  loadBlog();
+}

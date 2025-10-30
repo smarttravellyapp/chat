@@ -3,40 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SmartTravelly AI</title>
+  <title>SmartTravelly Chat</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/a2d9a6d8d6.js" crossorigin="anonymous"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="app-container">
-    <div class="chat-card">
-      <div class="chat-header">
-        <h2>SmartTravelly AI</h2>
-      </div>
+    <div class="tab-header">
+      <button class="tab-btn active" data-tab="chat">💬 Chat</button>
+      <button class="tab-btn" data-tab="blog">📰 Blog</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+    </div>
 
-      <div class="chat-body" id="chatBody">
-        <div class="bot-message">
-          👋 Hello! I’m SmartTravelly AI. Ask me about tours or travel ideas.
-        </div>
-      </div>
-
+    <!-- Chat Section -->
+    <section class="chat-section tab-content active" id="chat">
+      <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Type your question..." />
-        <button id="sendBtn">Send</button>
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button id="sendBtn">➤</button>
       </div>
-    </div>
+    </section>
 
-    <div class="nav-tabs">
-      <button class="tab active"><i class="fa-regular fa-comment"></i><span>Chat</span></button>
-      <button class="tab"><i class="fa-solid fa-map-location-dot"></i><span>Tours</span></button>
-      <button class="tab"><i class="fa-solid fa-store"></i><span>Shop</span></button>
-      <button class="tab"><i class="fa-solid fa-plane-departure"></i><span>Flights</span></button>
-      <button class="tab"><i class="fa-regular fa-newspaper"></i><span>Blog</span></button>
-      <button class="tab"><i class="fa-solid fa-bullhorn"></i><span>Promote</span></button>
-      <button class="tab"><i class="fa-regular fa-user"></i><span>Login</span></button>
-    </div>
+    <!-- Blog Section -->
+    <section class="blog-section tab-content" id="blog">
+      <ul id="blogList" class="blog-list"></ul>
+      <a href="#" id="loadMore" class="load-more">Load More</a>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings-section tab-content" id="settings">
+      <div style="padding:20px;text-align:center;">
+        <h3>Settings</h3>
+        <p>Demo placeholder for API connection later.</p>
+      </div>
+    </section>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

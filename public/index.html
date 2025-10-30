@@ -9,17 +9,19 @@
 </head>
 <body>
   <div class="app-container">
+    
+    <!-- Tabs Header -->
     <div class="tab-header">
       <button class="tab-btn active" data-tab="chat">💬 Chat</button>
       <button class="tab-btn" data-tab="blog">📰 Blog</button>
       <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     </div>
-
+    
     <!-- Chat Section -->
     <section class="chat-section tab-content active" id="chat">
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input">
-        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <input type="text" id="chatInput" placeholder="Type your message..." autocomplete="off" />
         <button id="sendBtn">➤</button>
       </div>
     </section>
@@ -27,16 +29,17 @@
     <!-- Blog Section -->
     <section class="blog-section tab-content" id="blog">
       <ul id="blogList" class="blog-list"></ul>
-      <a href="#" id="loadMore" class="load-more">Load More</a>
+      <button id="loadMore" class="load-more">Load More</button>
     </section>
 
     <!-- Settings Section -->
     <section class="settings-section tab-content" id="settings">
-      <div style="padding:20px;text-align:center;">
+      <div style="padding:32px 12px;text-align:center;">
         <h3>Settings</h3>
-        <p>Demo placeholder for API connection later.</p>
+        <p class="small">Demo placeholder for API connection later.</p>
       </div>
     </section>
+
   </div>
 </body>
 </html>

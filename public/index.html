@@ -4,209 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartTravelly AI</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background: #f5f7fb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    header {
-      background: #2d6cdf;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      font-weight: bold;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-    }
-
-    .app-container {
-      width: 95%;
-      max-width: 420px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      height: 420px;
-    }
-
-    .message {
-      padding: 10px 14px;
-      border-radius: 10px;
-      max-width: 80%;
-      line-height: 1.4;
-    }
-
-    .bot {
-      background: #eef3ff;
-      align-self: flex-start;
-    }
-
-    .user {
-      background: #2d6cdf;
-      color: #fff;
-      align-self: flex-end;
-    }
-
-    .input-box {
-      display: flex;
-      border-top: 1px solid #eee;
-      padding: 8px;
-    }
-
-    .input-box input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      outline: none;
-      font-size: 14px;
-    }
-
-    .input-box button {
-      background: #2d6cdf;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      margin-left: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .input-box button:hover {
-      background: #1e56b5;
-    }
-
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      background: #fff;
-      border-top: 1px solid #eee;
-      padding: 6px 0;
-    }
-
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      color: #555;
-      text-decoration: none;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: 0.3s;
-    }
-
-    .nav-item i {
-      font-size: 18px;
-      margin-bottom: 3px;
-    }
-
-    .nav-item.active,
-    .nav-item:hover {
-      color: #2d6cdf;
-    }
-
-    @media (max-width: 600px) {
-      .app-container {
-        width: 94%;
-        height: 90vh;
-      }
-      .messages {
-        height: auto;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../style.css" />
+  <script src="https://kit.fontawesome.com/a2d9a6d8d6.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="app-container">
-    <header>SmartTravelly AI</header>
-    <div class="messages" id="messages">
-      <div class="message bot">👋 Hello! I’m SmartTravelly AI. Ask me about tours or travel ideas.</div>
+    <div class="chat-card">
+      <div class="chat-header">
+        <h2>SmartTravelly AI</h2>
+      </div>
+
+      <div class="chat-body" id="chatBody">
+        <div class="bot-message">
+          👋 Hello! I’m SmartTravelly AI. Ask me about tours or travel ideas.
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your question..." />
+        <button id="sendBtn">Send</button>
+      </div>
     </div>
-    <div class="input-box">
-      <input type="text" id="userInput" placeholder="Type your question..." />
-      <button id="sendBtn">Send</button>
+
+    <div class="nav-tabs">
+      <button class="tab active"><i class="fa-regular fa-comment"></i><span>Chat</span></button>
+      <button class="tab"><i class="fa-solid fa-map-location-dot"></i><span>Tours</span></button>
+      <button class="tab"><i class="fa-solid fa-store"></i><span>Shop</span></button>
+      <button class="tab"><i class="fa-solid fa-plane-departure"></i><span>Flights</span></button>
+      <button class="tab"><i class="fa-regular fa-newspaper"></i><span>Blog</span></button>
+      <button class="tab"><i class="fa-solid fa-bullhorn"></i><span>Promote</span></button>
+      <button class="tab"><i class="fa-regular fa-user"></i><span>Login</span></button>
     </div>
-    <nav class="bottom-nav">
-      <a href="#" class="nav-item active"><i class="fa fa-comment-dots"></i><span>Chat</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-map-pin"></i><span>Tours</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-store"></i><span>Shop</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-plane"></i><span>Flights</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-blog"></i><span>Blog</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-bullhorn"></i><span>Promote</span></a>
-      <a href="#" class="nav-item"><i class="fa fa-user"></i><span>Login</span></a>
-    </nav>
   </div>
 
-  <script>
-    const sendBtn = document.getElementById("sendBtn");
-    const userInput = document.getElementById("userInput");
-    const messages = document.getElementById("messages");
-
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      // User message
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.textContent = text;
-      messages.appendChild(userMsg);
-      userInput.value = "";
-      messages.scrollTop = messages.scrollHeight;
-
-      // Bot message placeholder
-      const botMsg = document.createElement("div");
-      botMsg.className = "message bot";
-      botMsg.textContent = "Thinking...";
-      messages.appendChild(botMsg);
-      messages.scrollTop = messages.scrollHeight;
-
-      try {
-        const res = await fetch("https://api.monkecode.dev/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: text })
-        });
-        const data = await res.json();
-        botMsg.textContent = data.answer || "Sorry, I couldn't find an answer.";
-      } catch (err) {
-        botMsg.textContent = "⚠️ Error connecting to AI service.";
-      }
-
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
+  <script src="../script.js"></script>
 </body>
 </html>
